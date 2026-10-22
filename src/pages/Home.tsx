@@ -78,7 +78,7 @@ export default function Home() {
               </div>
               <div className="absolute -bottom-4 -right-4 bg-roar-orange rounded-2xl shadow-lg px-4 py-2.5 text-white">
                 <p className="text-xs opacity-80">Colección</p>
-                <p className="text-sm font-bold">2025</p>
+                <p className="text-sm font-bold">2026</p>
               </div>
             </div>
           </div>
