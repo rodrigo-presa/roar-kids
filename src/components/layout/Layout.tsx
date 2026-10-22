@@ -9,6 +9,11 @@ const WA_MESSAGE = encodeURIComponent('Hola! Quiero consultar sobre un producto 
 export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Announcement Bar */}
+      <div className="bg-roar-orange text-white text-xs font-medium py-2 px-4 text-center">
+        <span className="hidden sm:inline">🚚 Envíos a todo el país &nbsp;•&nbsp; 💳 Medios de pago y cuotas &nbsp;•&nbsp; 💬 Atención directa por WhatsApp</span>
+        <span className="sm:hidden">🚚 Envíos a todo el país &nbsp;•&nbsp; 💬 WhatsApp</span>
+      </div>
       <Navbar />
       <main className="flex-1">
         <Outlet />

@@ -13,7 +13,7 @@ export default function ProductPage() {
   const navigate = useNavigate()
   const { data: product, isLoading, error } = useProduct(slug!)
   const { addItem, openCart } = useCart()
-  const { user, isWholesale } = useAuth()
+  const { isWholesale } = useAuth()
 
   const [selectedColor, setSelectedColor] = useState<Color | null>(null)
   const [selectedSize, setSelectedSize] = useState<Size | null>(null)
@@ -77,12 +77,6 @@ export default function ProductPage() {
     product.variants?.some(v => v.color_id === color.id && v.stock > 0) ?? false
 
   const handleAddToCart = () => {
-    if (!user) {
-      toast.error('Necesitás iniciar sesión para comprar')
-      navigate('/ingresar', { state: { from: `/producto/${slug}` } })
-      return
-    }
-
     if (!selectedColor && colors.length > 1) {
       toast.error('Seleccioná un color')
       return
@@ -320,13 +314,6 @@ export default function ProductPage() {
             {isOutOfStock && selectedVariant ? 'Agotado' : 'Agregar al carrito'}
           </button>
 
-          {!user && (
-            <p className="text-xs text-gray-400 text-center mt-3">
-              Necesitás{' '}
-              <Link to="/ingresar" className="text-roar-orange hover:underline">iniciar sesión</Link>
-              {' '}para comprar
-            </p>
-          )}
         </div>
       </div>
     </div>

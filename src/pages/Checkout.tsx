@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Loader2, MapPin, CreditCard, Package, ChevronRight } from 'lucide-react'
+import { Loader2, MapPin, CreditCard, Package, ChevronRight, MessageCircle } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
@@ -20,6 +20,8 @@ const SHIPPING_METHODS = [
   { id: 'correo_express', name: 'Correo Argentino Express', price: 4500, days: '2 a 3 días hábiles' },
 ]
 
+const WA_NUMBER = '5491124061807'
+
 export default function Checkout() {
   const { items, subtotal, clear } = useCart()
   const { user, profile } = useAuth()
@@ -31,6 +33,7 @@ export default function Checkout() {
   const [form, setForm] = useState({
     full_name: profile?.full_name || '',
     phone: profile?.phone || '',
+    email: user?.email || '',
     dni: '',
     address: '',
     city: '',
@@ -45,12 +48,11 @@ export default function Checkout() {
   const update = (field: string, value: string) =>
     setForm(prev => ({ ...prev, [field]: value }))
 
+  // Para usuarios registrados: guarda en Supabase
   const handleCreateOrder = async () => {
     if (!user) return
     setLoading(true)
-
     try {
-      // 1. Crear la orden
       const { data: order, error: orderErr } = await supabase
         .from('orders')
         .insert({
@@ -73,7 +75,6 @@ export default function Checkout() {
 
       if (orderErr || !order) throw new Error('No se pudo crear el pedido')
 
-      // 2. Insertar items
       const itemsToInsert = items.map(item => ({
         order_id: order.id,
         variant_id: item.variantId,
@@ -92,19 +93,45 @@ export default function Checkout() {
 
       if (itemsErr) throw new Error('Error al guardar los productos del pedido')
 
-      // 3. Crear preferencia de Mercado Pago (vía Edge Function o API)
-      // En producción: llamar a supabase.functions.invoke('create-mp-preference', {...})
-      // Por ahora redirigimos a confirmación como simulación
       toast.success('¡Pedido creado! Redirigiendo al pago...')
       clear()
       navigate(`/pedido-confirmado/${order.id}`)
-
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Error desconocido'
       toast.error(message)
     } finally {
       setLoading(false)
     }
+  }
+
+  // Para invitados: arma el pedido como mensaje de WhatsApp
+  const handleGuestWhatsApp = () => {
+    const lines = [
+      '🛍️ *Nuevo pedido ROAR! Kids*',
+      '',
+      `👤 *${form.full_name}*`,
+      form.phone ? `📱 ${form.phone}` : '',
+      form.email ? `✉️ ${form.email}` : '',
+      form.dni ? `DNI: ${form.dni}` : '',
+      '',
+      '📦 *Productos:*',
+      ...items.map(item => {
+        const color = item.colorName ? ` (${item.colorName})` : ''
+        const size = item.sizeName ? ` T.${item.sizeName}` : ''
+        return `• ${item.productName}${color}${size} x${item.quantity} — ${formatPrice(item.price * item.quantity)}`
+      }),
+      '',
+      '🚚 *Envío:*',
+      `${form.address}, ${form.city}, ${form.province} (${form.postal_code})`,
+      `Método: ${shippingMethod.name} — ${formatPrice(shippingCost)}`,
+      '',
+      `💰 *Total: ${formatPrice(total)}*`,
+    ].filter(l => l !== undefined && l !== null)
+
+    const msg = encodeURIComponent(lines.join('\n'))
+    clear()
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank')
+    navigate('/')
   }
 
   if (items.length === 0) {
@@ -134,7 +161,6 @@ export default function Checkout() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Formulario */}
         <div className="lg:col-span-2">
 
           {/* Paso 1: Datos */}
@@ -152,6 +178,12 @@ export default function Checkout() {
                   <label className="block text-sm font-medium text-roar-graphite mb-1.5">Teléfono / WhatsApp</label>
                   <input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} className="input" placeholder="011 1234-5678" />
                 </div>
+                {!user && (
+                  <div>
+                    <label className="block text-sm font-medium text-roar-graphite mb-1.5">Email (opcional)</label>
+                    <input type="email" value={form.email} onChange={e => update('email', e.target.value)} className="input" placeholder="tu@email.com" />
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-roar-graphite mb-1.5">DNI</label>
                   <input type="text" value={form.dni} onChange={e => update('dni', e.target.value)} className="input" placeholder="12345678" />
@@ -217,12 +249,8 @@ export default function Checkout() {
                 ))}
               </div>
               <div className="flex gap-3 mt-6">
-                <button onClick={() => setStep('datos')} className="btn-ghost flex-1">
-                  Atrás
-                </button>
-                <button onClick={() => setStep('pago')} className="btn-primary flex-1 py-3">
-                  Ir al pago
-                </button>
+                <button onClick={() => setStep('datos')} className="btn-ghost flex-1">Atrás</button>
+                <button onClick={() => setStep('pago')} className="btn-primary flex-1 py-3">Ir al pago</button>
               </div>
             </div>
           )}
@@ -248,24 +276,46 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-roar-sky/20 border border-roar-sky/30 mb-6">
-                <img
-                  src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/5.21.22/mercadopago/logo__large@2x.png"
-                  alt="Mercado Pago"
-                  className="h-6"
-                  onError={e => { e.currentTarget.style.display = 'none' }}
-                />
-                <p className="text-xs text-gray-500">Pagás de forma segura con Mercado Pago. Tarjetas, transferencia y más.</p>
-              </div>
-
-              <div className="flex gap-3">
-                <button onClick={() => setStep('envio')} className="btn-ghost flex-1">
-                  Atrás
-                </button>
-                <button onClick={handleCreateOrder} disabled={loading} className="btn-primary flex-1 py-3">
-                  {loading ? <Loader2 size={18} className="animate-spin" /> : 'Pagar con Mercado Pago'}
-                </button>
-              </div>
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-roar-sky/20 border border-roar-sky/30 mb-6">
+                    <img
+                      src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/5.21.22/mercadopago/logo__large@2x.png"
+                      alt="Mercado Pago"
+                      className="h-6"
+                      onError={e => { e.currentTarget.style.display = 'none' }}
+                    />
+                    <p className="text-xs text-gray-500">Pagás de forma segura con Mercado Pago. Tarjetas, transferencia y más.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <button onClick={() => setStep('envio')} className="btn-ghost flex-1">Atrás</button>
+                    <button onClick={handleCreateOrder} disabled={loading} className="btn-primary flex-1 py-3">
+                      {loading ? <Loader2 size={18} className="animate-spin" /> : 'Pagar con Mercado Pago'}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200 mb-6">
+                    <MessageCircle size={22} className="text-green-600 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-semibold text-green-800">Coordinamos el pago por WhatsApp</p>
+                      <p className="text-xs text-green-600 mt-0.5">Te vamos a confirmar la disponibilidad y los medios de pago por WhatsApp.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <button onClick={() => setStep('envio')} className="btn-ghost flex-1">Atrás</button>
+                    <button
+                      onClick={handleGuestWhatsApp}
+                      className="flex-1 py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
+                      style={{ backgroundColor: '#25D366' }}
+                    >
+                      <MessageCircle size={18} />
+                      Enviar pedido por WhatsApp
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
