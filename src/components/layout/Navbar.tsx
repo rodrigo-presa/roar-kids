@@ -41,7 +41,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <img src="/logo.png" alt="ROAR!" className="h-10 w-auto" />
+            <img src="/logo.png" alt="ROAR!" className="h-10 w-10 rounded-full object-cover" />
           </Link>
 
           {/* Nav desktop */}

@@ -9,7 +9,7 @@ export default function Footer() {
 
           {/* Marca */}
           <div className="lg:col-span-1">
-            <img src="/logo.png" alt="ROAR!" className="h-12 w-auto mb-4 brightness-0 invert" />
+            <img src="/logo.png" alt="ROAR!" className="h-12 w-12 rounded-full object-cover mb-4" />
             <p className="text-sm text-gray-400 leading-relaxed">
               Ropa de bebés, niños y teens con estilo y alegría. Diseños únicos para que brillen.
             </p>

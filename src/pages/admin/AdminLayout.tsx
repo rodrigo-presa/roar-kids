@@ -30,7 +30,7 @@ export default function AdminLayout() {
       {/* Sidebar desktop */}
       <aside className="hidden md:flex flex-col w-56 bg-roar-graphite text-white">
         <div className="p-5 border-b border-white/10">
-          <img src="/logo.png" alt="ROAR!" className="h-8 brightness-0 invert" />
+          <img src="/logo.png" alt="ROAR!" className="h-8 w-8 rounded-full object-cover" />
           <span className="text-xs text-gray-400 mt-1 block">Panel Admin</span>
         </div>
         <nav className="flex-1 p-3 space-y-1">
@@ -62,7 +62,7 @@ export default function AdminLayout() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
           <aside className="relative w-56 h-full bg-roar-graphite text-white flex flex-col">
             <div className="p-5 border-b border-white/10 flex items-center justify-between">
-              <img src="/logo.png" alt="ROAR!" className="h-8 brightness-0 invert" />
+              <img src="/logo.png" alt="ROAR!" className="h-8 w-8 rounded-full object-cover" />
               <button onClick={() => setSidebarOpen(false)}>
                 <X size={20} className="text-gray-400" />
               </button>
@@ -95,7 +95,7 @@ export default function AdminLayout() {
           <button onClick={() => setSidebarOpen(true)} className="p-1.5 rounded-lg hover:bg-gray-100">
             <Menu size={20} className="text-roar-graphite" />
           </button>
-          <img src="/logo.png" alt="ROAR!" className="h-7" />
+          <img src="/logo.png" alt="ROAR!" className="h-7 w-7 rounded-full object-cover" />
           <span className="text-xs text-gray-400">Admin</span>
         </header>
 

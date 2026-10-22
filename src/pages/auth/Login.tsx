@@ -33,7 +33,7 @@ export default function Login() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="ROAR!" className="h-14 mx-auto mb-4" />
+          <img src="/logo.png" alt="ROAR!" className="h-14 w-14 mx-auto mb-4 rounded-full object-cover" />
           <h1 className="text-2xl font-bold text-roar-graphite">Bienvenida de vuelta</h1>
           <p className="text-gray-400 text-sm mt-1">Ingresá para ver tus pedidos y comprar</p>
         </div>

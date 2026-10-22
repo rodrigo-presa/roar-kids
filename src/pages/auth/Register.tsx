@@ -36,7 +36,7 @@ export default function Register() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="ROAR!" className="h-14 mx-auto mb-4" />
+          <img src="/logo.png" alt="ROAR!" className="h-14 w-14 mx-auto mb-4 rounded-full object-cover" />
           <h1 className="text-2xl font-bold text-roar-graphite">Crear cuenta</h1>
           <p className="text-gray-400 text-sm mt-1">Registrate para comprar en ROAR!</p>
         </div>
