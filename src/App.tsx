@@ -40,7 +40,7 @@ export default function App() {
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/productos/:slug" element={<ProductPage />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/confirmacion" element={<OrderConfirmation />} />
+        <Route path="/pedido-confirmado/:orderId" element={<OrderConfirmation />} />
         <Route path="/mis-pedidos" element={<MyOrders />} />
 
         {/* Auth */}

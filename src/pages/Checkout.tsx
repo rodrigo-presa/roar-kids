@@ -290,19 +290,17 @@ export default function Checkout() {
 
               {user ? (
                 <>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-roar-sky/20 border border-roar-sky/30 mb-6">
-                    <img
-                      src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/5.21.22/mercadopago/logo__large@2x.png"
-                      alt="Mercado Pago"
-                      className="h-6"
-                      onError={e => { e.currentTarget.style.display = 'none' }}
-                    />
-                    <p className="text-xs text-gray-500">Pagás de forma segura con Mercado Pago. Tarjetas, transferencia y más.</p>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-roar-beige/60 border border-roar-beige mb-6">
+                    <CreditCard size={20} className="text-roar-orange flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-semibold text-roar-graphite">Coordinar pago</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Aceptamos transferencia, Mercado Pago y efectivo. Te enviamos los datos al confirmar.</p>
+                    </div>
                   </div>
                   <div className="flex gap-3">
                     <button onClick={() => setStep('envio')} className="btn-ghost flex-1">Atrás</button>
                     <button onClick={handleCreateOrder} disabled={loading} className="btn-primary flex-1 py-3">
-                      {loading ? <Loader2 size={18} className="animate-spin" /> : 'Pagar con Mercado Pago'}
+                      {loading ? <Loader2 size={18} className="animate-spin" /> : 'Confirmar pedido'}
                     </button>
                   </div>
                 </>
