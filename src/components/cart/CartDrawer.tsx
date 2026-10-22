@@ -1,21 +1,15 @@
 import { X, ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
-import { useAuth } from '../../context/AuthContext'
 import { formatPrice } from '../../lib/utils'
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQty, subtotal, itemCount } = useCart()
-  const { user } = useAuth()
   const navigate = useNavigate()
 
   const handleCheckout = () => {
     closeCart()
-    if (!user) {
-      navigate('/ingresar', { state: { from: '/checkout' } })
-    } else {
-      navigate('/checkout')
-    }
+    navigate('/checkout')
   }
 
   return (

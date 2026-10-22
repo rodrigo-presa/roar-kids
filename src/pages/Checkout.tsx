@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Loader2, MapPin, CreditCard, Package, ChevronRight, MessageCircle } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
@@ -166,9 +166,21 @@ export default function Checkout() {
           {/* Paso 1: Datos */}
           {step === 'datos' && (
             <div className="card p-6">
-              <h2 className="font-semibold text-roar-graphite flex items-center gap-2 mb-5">
-                <MapPin size={18} className="text-roar-orange" /> Datos personales y de entrega
-              </h2>
+              {!user && (
+                <div className="flex items-center justify-between mb-5">
+                  <h2 className="font-semibold text-roar-graphite flex items-center gap-2">
+                    <MapPin size={18} className="text-roar-orange" /> Datos de entrega
+                  </h2>
+                  <Link to="/ingresar" state={{ from: '/checkout' }} className="text-xs text-roar-orange hover:underline font-medium">
+                    ¿Ya tenés cuenta? Ingresá acá →
+                  </Link>
+                </div>
+              )}
+              {user && (
+                <h2 className="font-semibold text-roar-graphite flex items-center gap-2 mb-5">
+                  <MapPin size={18} className="text-roar-orange" /> Datos personales y de entrega
+                </h2>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-roar-graphite mb-1.5">Nombre y apellido</label>
