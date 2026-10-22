@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ChevronLeft, ShoppingBag, Check, AlertCircle, Minus, Plus } from 'lucide-react'
+import { ChevronLeft, ShoppingBag, Check, AlertCircle, Minus, Plus, Ruler } from 'lucide-react'
 import { useProduct } from '../hooks/useProducts'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { formatPrice } from '../lib/utils'
 import type { ProductVariant, Color, Size } from '../types'
 import { toast } from 'sonner'
+import { SizeGuideModal } from '../components/product/SizeGuideModal'
 
 export default function ProductPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -19,6 +20,7 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState<Size | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [showSizeGuide, setShowSizeGuide] = useState(false)
 
   if (isLoading) {
     return (
@@ -129,6 +131,7 @@ export default function ProductPage() {
   const price = isWholesale && product.wholesale_price ? product.wholesale_price : product.retail_price
 
   return (
+    <>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       {/* Breadcrumb */}
       <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-gray-400 hover:text-roar-orange transition-colors mb-8">
@@ -231,9 +234,18 @@ export default function ProductPage() {
           {/* Selector de talle */}
           {sizes.length > 0 && (
             <div className="mb-6">
-              <p className="text-sm font-semibold text-roar-graphite mb-3">
-                Talle{selectedSize ? `: ${selectedSize.name}` : ''}
-              </p>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm font-semibold text-roar-graphite">
+                  Talle{selectedSize ? `: ${selectedSize.name}` : ''}
+                </p>
+                <button
+                  onClick={() => setShowSizeGuide(true)}
+                  className="flex items-center gap-1.5 text-xs text-roar-orange hover:underline font-medium"
+                >
+                  <Ruler size={13} />
+                  Guía de talles
+                </button>
+              </div>
               <div className="flex gap-2 flex-wrap">
                 {sizes.map(size => {
                   const available = isSizeAvailable(size)
@@ -317,5 +329,8 @@ export default function ProductPage() {
         </div>
       </div>
     </div>
+
+      <SizeGuideModal isOpen={showSizeGuide} onClose={() => setShowSizeGuide(false)} />
+    </>
   )
 }
