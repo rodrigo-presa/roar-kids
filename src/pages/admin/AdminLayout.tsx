@@ -1,5 +1,5 @@
-import { NavLink, Outlet, useNavigate, Navigate } from 'react-router-dom'
-import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Menu, X } from 'lucide-react'
+import { NavLink, Outlet, useNavigate, Navigate, Link } from 'react-router-dom'
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Menu, X, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 
@@ -56,7 +56,10 @@ export default function AdminLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-white/10 space-y-1">
+          <Link to="/" className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+            <ExternalLink size={16} /> Ver tienda
+          </Link>
           <button onClick={handleSignOut} className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
             <LogOut size={16} /> Cerrar sesión
           </button>
@@ -91,6 +94,11 @@ export default function AdminLayout() {
                 </NavLink>
               ))}
             </nav>
+            <div className="p-3 border-t border-white/10 space-y-1">
+              <Link to="/" onClick={() => setSidebarOpen(false)} className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                <ExternalLink size={16} /> Ver tienda
+              </Link>
+            </div>
           </aside>
         </div>
       )}
