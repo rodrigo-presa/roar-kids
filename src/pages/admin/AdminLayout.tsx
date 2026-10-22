@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate, Navigate } from 'react-router-dom'
 import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
@@ -11,13 +11,20 @@ const navItems = [
 ]
 
 export default function AdminLayout() {
-  const { isAdmin, signOut } = useAuth()
+  const { isAdmin, loading, signOut } = useAuth()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-8 h-8 border-4 border-roar-orange border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+
   if (!isAdmin) {
-    navigate('/')
-    return null
+    return <Navigate to="/" replace />
   }
 
   const handleSignOut = async () => {
