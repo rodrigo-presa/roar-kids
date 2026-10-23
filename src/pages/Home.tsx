@@ -66,10 +66,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Imagen hero — cuando haya fotos reales */}
+            {/* Hero image */}
             <div className="flex-1 relative max-w-sm w-full mx-auto">
-              <div className="aspect-square rounded-3xl bg-gradient-to-br from-roar-orange/20 via-roar-sky/20 to-roar-yellow/20 flex items-center justify-center shadow-xl">
-                <img src="/logo.png" alt="ROAR!" className="w-40 h-40 object-cover drop-shadow-lg rounded-full" />
+              <div className="rounded-3xl overflow-hidden shadow-xl bg-white">
+                <img src="/hero-pants.png" alt="Nueva colección ROAR!" className="w-full h-full object-cover" />
               </div>
               {/* Floating badges */}
               <div className="absolute -top-4 -left-4 bg-white rounded-2xl shadow-lg px-4 py-2.5">
