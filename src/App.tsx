@@ -21,6 +21,8 @@ import ProfilePage from './pages/ProfilePage'
 
 // Wholesale pages
 import WholesaleLanding from './pages/wholesale/WholesaleLanding'
+import FAQ from './pages/FAQ'
+import PaymentMethods from './pages/PaymentMethods'
 import WholesaleDashboard from './pages/wholesale/WholesaleDashboard'
 import MyWholesaleRequests from './pages/wholesale/MyWholesaleRequests'
 
@@ -54,6 +56,8 @@ export default function App() {
 
         {/* Wholesale */}
         <Route path="/mayoristas" element={<WholesaleLanding />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/pagos" element={<PaymentMethods />} />
         <Route path="/mayoristas/panel" element={<WholesaleDashboard />} />
         <Route path="/mayoristas/solicitudes" element={<MyWholesaleRequests />} />
       </Route>
