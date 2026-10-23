@@ -1,7 +1,9 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Truck, RefreshCw, Shield, Star } from 'lucide-react'
 import { useFeaturedProducts } from '../hooks/useProducts'
 import ProductCard from '../components/product/ProductCard'
+import { useScrollReveal } from '../hooks/useScrollReveal'
 
 const categories = [
   {
@@ -36,6 +38,10 @@ const benefits = [
 
 export default function Home() {
   const { data: featured, isLoading } = useFeaturedProducts()
+  const { ref: catRef, visible: catVisible } = useScrollReveal()
+  const { ref: featRef, visible: featVisible } = useScrollReveal()
+  const { ref: benRef, visible: benVisible } = useScrollReveal()
+  const { ref: mayorRef, visible: mayorVisible } = useScrollReveal()
 
   return (
     <div>
@@ -87,18 +93,18 @@ export default function Home() {
       </section>
 
       {/* Categorías */}
-      <section className="py-16 bg-white">
+      <section ref={catRef as React.RefObject<HTMLElement>} className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <div className={`text-center mb-10 ${catVisible ? "animate-reveal-up" : "opacity-0 translate-y-6"}`}>
             <h2 className="text-2xl md:text-3xl font-bold text-roar-graphite">Comprá por categoría</h2>
             <p className="text-gray-400 mt-2">Encontrá lo que buscás según la edad</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {categories.map(cat => (
+            {categories.map((cat, i) => (
               <Link
                 key={cat.slug}
                 to={`/catalogo/${cat.slug}`}
-                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.color} p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-100 hover:border-roar-orange/20`}
+                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.color} p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-100 hover:border-roar-orange/20 ${catVisible ? `animate-reveal-up stagger-${i + 1}` : 'opacity-0 translate-y-6'}`}
               >
                 <div className="text-5xl mb-4">{cat.emoji}</div>
                 <h3 className="text-xl font-bold text-roar-graphite">{cat.name}</h3>
@@ -114,9 +120,9 @@ export default function Home() {
 
       {/* Destacados */}
       {(isLoading || (featured && featured.length > 0)) && (
-        <section className="py-16 bg-roar-cream">
+        <section ref={featRef as React.RefObject<HTMLElement>} className="py-16 bg-roar-cream">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-10">
+            <div className={`flex items-center justify-between mb-10 ${featVisible ? "animate-reveal-up" : "opacity-0 translate-y-6"}`}>
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-roar-graphite">Productos destacados</h2>
                 <p className="text-gray-400 mt-1">Los favoritos de la temporada</p>
@@ -140,8 +146,10 @@ export default function Home() {
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {featured?.map(product => (
-                  <ProductCard key={product.id} product={product} />
+                {featured?.map((product, i) => (
+                  <div key={product.id} className={featVisible ? `animate-reveal-up stagger-${(i % 8) + 1}` : "opacity-0"}>
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             )}
@@ -156,12 +164,12 @@ export default function Home() {
       )}
 
       {/* Beneficios */}
-      <section className="py-16 bg-white border-t border-gray-50">
+      <section ref={benRef as React.RefObject<HTMLElement>} className="py-16 bg-white border-t border-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex items-start gap-4 p-4">
-                <div className="w-10 h-10 rounded-xl bg-roar-orange/10 flex items-center justify-center flex-shrink-0">
+            {benefits.map(({ icon: Icon, title, desc }, i) => (
+              <div key={title} className={`flex items-start gap-4 p-4 ${benVisible ? `animate-reveal-up stagger-${i + 1}` : "opacity-0 translate-y-6"}`}>
+                <div className="benefit-icon w-10 h-10 rounded-xl bg-roar-orange/10 flex items-center justify-center flex-shrink-0">
                   <Icon size={20} className="text-roar-orange" />
                 </div>
                 <div>
@@ -175,12 +183,12 @@ export default function Home() {
       </section>
 
       {/* Banner mayoristas */}
-      <section className="py-16 bg-gradient-to-r from-roar-graphite to-gray-800">
+      <section ref={mayorRef as React.RefObject<HTMLElement>} className="py-16 bg-gradient-to-r from-roar-graphite to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className={`text-2xl md:text-3xl font-bold text-white mb-4 ${mayorVisible ? "animate-reveal-up" : "opacity-0"}`}>
             ¿Tenés una tienda o revendés ropa?
           </h2>
-          <p className="text-gray-300 max-w-lg mx-auto mb-8">
+          <p className={`text-gray-300 max-w-lg mx-auto mb-8 ${mayorVisible ? "animate-reveal-up delay-100" : "opacity-0"}`}>
             Accedé al catálogo mayorista con precios especiales y condiciones exclusivas para revendedoras.
           </p>
           <Link to="/mayoristas" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-roar-sky text-roar-graphite font-bold text-sm hover:bg-roar-sky/80 transition-colors">

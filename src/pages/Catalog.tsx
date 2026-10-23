@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { useProducts, useCategories } from '../hooks/useProducts'
@@ -46,6 +47,8 @@ export default function Catalog() {
       if (sort === 'name') return a.name.localeCompare(b.name)
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     })
+
+  const { ref: gridRef, visible: gridVisible } = useScrollReveal(0.05)
 
   const toggleColor = (id: string) =>
     setFilterColors(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id])
@@ -148,9 +151,11 @@ export default function Catalog() {
               ))}
             </div>
           ) : filtered && filtered.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filtered.map(product => (
-                <ProductCard key={product.id} product={product} />
+            <div ref={gridRef as React.RefObject<HTMLElement>} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filtered.map((product, i) => (
+                <div key={product.id} className={gridVisible ? `animate-reveal-up stagger-${(i % 8) + 1}` : "opacity-0"}>
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
           ) : (

@@ -155,3 +155,67 @@ a[href*="whatsapp"] {
 }
 .btn-primary:hover  { box-shadow: 0 4px 14px rgba(244,123,53,.35); }
 .btn-secondary:hover{ box-shadow: 0 4px 14px rgba(244,123,53,.15); }
+
+/* Slide-in para navbar overlays */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cartBounce {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.4); }
+  60%       { transform: scale(0.9); }
+}
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes iconPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25) rotate(-8deg); }
+  70%  { transform: scale(0.95) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@layer utilities {
+  .animate-slide-in     { animation: slideIn     0.22s ease both; }
+  .animate-cart-bounce  { animation: cartBounce  0.45s cubic-bezier(.22,.68,0,1.2) both; }
+  .animate-reveal-up    { animation: revealUp    0.55s cubic-bezier(.22,.68,0,1.2) both; }
+
+  /* Stagger para grillas */
+  .stagger-1  { animation-delay: 0.05s; }
+  .stagger-2  { animation-delay: 0.10s; }
+  .stagger-3  { animation-delay: 0.15s; }
+  .stagger-4  { animation-delay: 0.20s; }
+  .stagger-5  { animation-delay: 0.25s; }
+  .stagger-6  { animation-delay: 0.30s; }
+  .stagger-7  { animation-delay: 0.35s; }
+  .stagger-8  { animation-delay: 0.40s; }
+}
+
+/* Logo: scale suave en hover */
+header a img { transition: transform 0.25s cubic-bezier(.22,.68,0,1.2); }
+header a:hover img { transform: scale(1.12); }
+
+/* Benefit icons: pop en hover */
+.benefit-icon:hover { animation: iconPop 0.45s cubic-bezier(.22,.68,0,1.2); }
+
+/* Footer links: underline slide */
+footer a {
+  position: relative;
+  display: inline-block;
+}
+footer ul a::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 0; height: 1px;
+  background: white;
+  transition: width 0.22s ease;
+}
+footer ul a:hover::after { width: 100%; }
+
+/* Input focus: glow suave */
+.input:focus {
+  box-shadow: 0 0 0 3px rgba(244,123,53,.15);
+}
