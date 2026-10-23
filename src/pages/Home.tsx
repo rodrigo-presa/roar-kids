@@ -44,18 +44,18 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1 text-center md:text-left">
-              <span className="inline-block px-3 py-1 rounded-full bg-roar-orange/10 text-roar-orange text-xs font-semibold mb-4 uppercase tracking-wider">
+              <span className="inline-block px-3 py-1 rounded-full bg-roar-orange/10 text-roar-orange text-xs font-semibold mb-4 uppercase tracking-wider animate-pop-in">
                 Nueva colección
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-roar-graphite leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-roar-graphite leading-tight mb-6 animate-fade-left delay-100">
                 Ropa con
                 <span className="text-roar-orange"> alegría</span>
                 <br />para cada etapa
               </h1>
-              <p className="text-lg text-gray-500 max-w-md mb-8 mx-auto md:mx-0">
+              <p className="text-lg text-gray-500 max-w-md mb-8 mx-auto md:mx-0 animate-fade-left delay-200">
                 Diseños únicos para bebés, niños y teens. Calidad y estilo que se nota en cada prenda.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start animate-fade-up delay-300">
                 <Link to="/catalogo" className="btn-primary text-base px-7 py-3">
                   Ver catálogo
                   <ArrowRight size={18} />
@@ -67,16 +67,16 @@ export default function Home() {
             </div>
 
             {/* Hero image */}
-            <div className="flex-1 relative max-w-sm w-full mx-auto">
+            <div className="flex-1 relative max-w-sm w-full mx-auto animate-fade-right delay-200">
               <div className="rounded-3xl overflow-hidden shadow-xl bg-white">
                 <img src="/hero-pants.png" alt="Nueva colección ROAR!" className="w-full h-full object-cover" />
               </div>
               {/* Floating badges */}
-              <div className="absolute -top-4 -right-4 bg-roar-orange rounded-2xl shadow-lg px-4 py-2.5 text-white">
+              <div className="absolute -top-4 -right-4 bg-roar-orange rounded-2xl shadow-lg px-4 py-2.5 text-white animate-pop-in delay-400">
                 <p className="text-xs opacity-80">Colección</p>
                 <p className="text-sm font-bold">2026</p>
               </div>
-              <div className="absolute -top-4 -left-4 bg-white rounded-2xl shadow-lg px-4 py-2.5">
+              <div className="absolute -top-4 -left-4 bg-white rounded-2xl shadow-lg px-4 py-2.5 animate-float">
                 <p className="text-xs text-gray-400">Envíos a</p>
                 <p className="text-sm font-bold text-roar-graphite">todo el país 🇦🇷</p>
               </div>
@@ -98,7 +98,7 @@ export default function Home() {
               <Link
                 key={cat.slug}
                 to={`/catalogo/${cat.slug}`}
-                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.color} p-8 text-center hover:shadow-md transition-all duration-300 hover:-translate-y-1 border border-gray-100`}
+                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.color} p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-100 hover:border-roar-orange/20`}
               >
                 <div className="text-5xl mb-4">{cat.emoji}</div>
                 <h3 className="text-xl font-bold text-roar-graphite">{cat.name}</h3>

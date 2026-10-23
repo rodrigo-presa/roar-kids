@@ -26,14 +26,14 @@ export default function ProductCard({ product }: Props) {
 
   return (
     <Link to={`/producto/${product.slug}`} className="group block">
-      <div className="card overflow-hidden hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+      <div className="card overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         {/* Imagen */}
         <div className="relative aspect-[3/4] bg-roar-beige overflow-hidden">
           {primaryImage ? (
             <img
               src={primaryImage.url}
               alt={primaryImage.alt_text || product.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -59,7 +59,11 @@ export default function ProductCard({ product }: Props) {
           </div>
 
           {/* Hover overlay */}
-          <div className="absolute inset-0 bg-roar-graphite/0 group-hover:bg-roar-graphite/5 transition-colors duration-300" />
+          <div className="absolute inset-0 bg-roar-graphite/0 group-hover:bg-roar-graphite/10 transition-colors duration-300" />
+          {/* Slide-up CTA */}
+          <div className="card-product-overlay absolute bottom-0 left-0 right-0 bg-roar-orange/95 backdrop-blur-sm py-2.5 text-center">
+            <span className="text-white text-xs font-bold tracking-wide uppercase">Ver producto →</span>
+          </div>
         </div>
 
         {/* Info */}
