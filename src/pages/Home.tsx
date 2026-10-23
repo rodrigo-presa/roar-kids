@@ -72,6 +72,10 @@ export default function Home() {
                 <img src="/hero-pants.png" alt="Nueva colección ROAR!" className="w-full h-full object-cover" />
               </div>
               {/* Floating badges */}
+              <div className="absolute -top-4 -right-4 bg-roar-orange rounded-2xl shadow-lg px-4 py-2.5 text-white">
+                <p className="text-xs opacity-80">Colección</p>
+                <p className="text-sm font-bold">2026</p>
+              </div>
               <div className="absolute -top-4 -left-4 bg-white rounded-2xl shadow-lg px-4 py-2.5">
                 <p className="text-xs text-gray-400">Envíos a</p>
                 <p className="text-sm font-bold text-roar-graphite">todo el país 🇦🇷</p>
